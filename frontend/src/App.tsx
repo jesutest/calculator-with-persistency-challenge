@@ -1,13 +1,16 @@
+import axios from 'axios';
 import React, {useState} from 'react';
 
-type OperationType = 'sum' | 'subtraction' | 'multiplication' | 'division'
+type OperationType = 'ADDITION' | 'SUBSTRACTION' | 'MULTIPLICATION' | 'DIVISION'
+
+
+const API_URL: string = import.meta.env.VITE_REACT_API_URL
 
 export const App: React.FC = () => {
 
-
     const [operandA, setOperandA] = useState<string>("");
     const [operandB, setOperandB] = useState<string>("");
-    const [operation, setOperation] = useState<string>("sum");
+    const [operation, setOperation] = useState<string>("ADDITION");
     const [total, setTotal] = useState<string>("");
 
     const handleOperationSelect = (value: OperationType) => {
@@ -15,7 +18,9 @@ export const App: React.FC = () => {
         setOperation(value);
     }
 
-    const handleSubmit = (e: any) => {
+    
+
+    const handleSubmit = async (e: any) => {
         const LOWER_LIMIT = -1_000_000;
         const UPPER_LIMIT = 1_000_000;
 
@@ -23,28 +28,25 @@ export const App: React.FC = () => {
         console.log('doing something');
         console.log(`Operation selected: ${operation}`);
         
-        if( Number(operandA) < LOWER_LIMIT ) {
-            console.log(`Operand A cannot be lower than: ${LOWER_LIMIT}`);
+        if( Number(operandA) < LOWER_LIMIT || Number(operandA) > UPPER_LIMIT
+            || Number(operandB) < LOWER_LIMIT || Number(operandB) > UPPER_LIMIT ) {
+            console.log(`Operands should be between -1,000,000 and +1,000,000`);
             setTotal("NA");
             return;
         }
 
-        if( Number(operandA) > UPPER_LIMIT ) {
-            console.log(`Operand A cannot be higher than: ${LOWER_LIMIT}`);
-            setTotal("NA");
-            return;
-        }
+        console.log(`sending data: ${operandA}, ${operandB}, ${operation}`);
+        
+        const response = await axios.post(
+            `${API_URL}/api/calculate`, {
+                operandA: operandA,
+                operandB: operandB,
+                operation: operation
+            }
+        )
 
-        switch(operation){
-            case 'sum':
-                console.log(String(Number(operandA) + Number(operandB)));
-                setTotal( String(Number(operandA) + Number(operandB)));
-            break;
-            case 'subtraction':
-                console.log(String(Number(operandA) - Number(operandB)));
-                setTotal( String(Number(operandA) - Number(operandB)));
-            break;
-        }
+        console.log(`response: ${JSON.stringify(response.data)}`);
+    
     }
 
     return (
@@ -56,10 +58,10 @@ export const App: React.FC = () => {
 
                 <select name="operation" id="operation" defaultValue="sum"
                     onChange={ e => handleOperationSelect(e.target.value as OperationType) }>
-                    <option value="sum">+</option>
-                    <option value="subtraction">-</option>
-                    <option value="multiplication">*</option>
-                    <option value="division">/</option>
+                    <option value="ADDITION">+</option>
+                    <option value="SUBSTRACTION">-</option>
+                    <option value="MULTIPLICATION">*</option>
+                    <option value="DIVISION">/</option>
                 </select>
 
                 <label htmlFor="operandB">Operand B</label>
