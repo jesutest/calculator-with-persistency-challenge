@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 
-type OperationType = 'ADDITION' | 'SUBSTRACTION' | 'MULTIPLICATION' | 'DIVISION'
+type OperationType = 'ADDITION' | 'SUBSTRACTION' | 'MULTIPLICATION' | 'DIVISION' | 'SQUARE_ROOT';
 
 
 const API_URL: string = import.meta.env.VITE_REACT_API_URL
@@ -35,6 +35,16 @@ export const App: React.FC = () => {
             return;
         }
 
+        if( operation === 'DIVISION' && Number(operandB) === 0) {
+            console.log('Division by zero is not allowed');
+            return false;
+        }
+
+        if( operation === 'SQUARE_ROOT' && Number(operandB) < 0) {
+            console.log('Square root is not allowed for negative numbers');
+            return false;
+        }
+
         console.log(`sending data: ${operandA}, ${operandB}, ${operation}`);
         
         const response = await axios.post(
@@ -62,6 +72,7 @@ export const App: React.FC = () => {
                     <option value="SUBSTRACTION">-</option>
                     <option value="MULTIPLICATION">*</option>
                     <option value="DIVISION">/</option>
+                    <option value="SQUARE_ROOT">√</option>
                 </select>
 
                 <label htmlFor="operandB">Operand B</label>

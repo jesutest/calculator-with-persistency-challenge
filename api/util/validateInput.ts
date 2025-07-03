@@ -16,6 +16,10 @@ export const isAvalidOperation = (operandA: number, operandB: number, operation?
         return false;
     }
 
-    // TODO: Validate if is zero
+    if( operation === 'SQUARE_ROOT' && operandB < 0) {
+        console.log('Square root is not allowed for negative numbers');
+        return false;
+    }
+    
     return true;
 }

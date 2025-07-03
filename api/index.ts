@@ -36,7 +36,8 @@ app.post('/api/calculate', (req: Request, res: Response) => {
         
         res.status(400)
             .send({
-            "message": `Operands should be between -1,000,000 and +1,000,000 and divison by zero is not allowed`
+            "message": `Operands should be between -1,000,000 and +1,000,000, divison by zero is not allowed \
+                and Square root is not allowed for negative numbers`
         });
         return;
     }

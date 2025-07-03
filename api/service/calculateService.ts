@@ -1,5 +1,6 @@
 import { OperationType } from "../types/types";
 
+
 export const calculate = (operandA: number, operandB: number, operation: OperationType): number => {
 
     switch(operation) {
@@ -11,5 +12,7 @@ export const calculate = (operandA: number, operandB: number, operation: Operati
             return operandA * operandB;
         case 'DIVISION':
             return operandA / operandB;
+        case 'SQUARE_ROOT':
+            return Math.sqrt(operandB) ;
     }
 }
