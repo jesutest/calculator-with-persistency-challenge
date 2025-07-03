@@ -6,9 +6,9 @@ import express, {
 // @ts-ignore
 import cors from 'cors';
 
-import { OperationType } from './types/types';
+import { OperationType, OperationResponse } from './types/types';
 import { isAvalidOperation } from './util/validateInput';
-import { calculate } from './service/calculateService';
+import { operationService } from './service/operationService';
 
 const app: Application = express();
 const port = 3000;
@@ -24,7 +24,7 @@ app.get('/', (_req: Request, res: Response) => {
     })
 });
 
-app.post('/api/calculate', (req: Request, res: Response) => {
+app.post('/api/calculate', async (req: Request, res: Response) => {
     
     const body = req.body;
     const operandA: number = Number(body.operandA);
@@ -43,9 +43,10 @@ app.post('/api/calculate', (req: Request, res: Response) => {
     }
 
     // 
-    const calculatedValue = calculate(operandA, operandB, operation);
+    const operationResponse: OperationResponse = await operationService( { operandA, operandB, operation } );
+
     res.send({
-        "message": `operandA: ${operandA}, operandB: ${operandB}, operation: ${operation}, calculatedValue: ${calculatedValue}`
+        "message": operationResponse
     })
 });
 
