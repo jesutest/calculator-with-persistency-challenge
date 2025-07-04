@@ -1,21 +1,6 @@
 # calculator-with-persistency-challenge
 
-# Setup React app
-
-Run the `npm i`from the frontend folder and then use `npm run dev`.
-That command will start the application which behinds is configured by Vite and Typescript.
-
-Bootstrap CSS is imported to use its CSS clases and the JS interactivity for opening the modal.
-It's plain Boostrap, React-Bootstrap or React-style frameworks were not installed to write the react components from scratch.
-
-# Setup Express API
-
-Run the `npm i` from the api folder and then use `npm run start` to launch the api.
-Behind that command the `tsc` tool is used, for node it doesn't have something like `ts-node` meaning
-that whenever a change is required the `npm run start` command should be run again to reflect the last changes
-in contrast with the React app which thanks to Vite all the changes are reflected immediately.
-
-### Setup MySQL database
+# Setup MySQL database
 
 #### NOTE: You'll get a warning saying that the engine version from the database is no longer supported, however the docker image is the latest available. This need to be address later to verify what's wrong on Sequelize, it might that the driver is the official from MariaDB.
 
@@ -30,6 +15,34 @@ The above command requires the password specified in MYSQL_ROOT_PASSWORD from th
 Verify that the calculator database was created by running `show databases;`
 
 and once the api project is launched you can verify the existence of the tables with `SELECT table_name FROM information_schema.tables where table_schema='calculator';` it should display the `users` and `operations` tables; 
+
+# Setup Express API
+
+Add the values for the env vars in the `.env` file 
+`DATABASE_NAME,
+DATABASE_USER,
+DATABASE_PASSWORD,
+`
+the values can be found in database.sql, docker-compose.yaml the user is ROOT.
+
+Run the `npm i` from the api folder and then use `npm run start` to launch the api.
+Behind that command the `tsc` tool is used, for node it doesn't have something like `ts-node` meaning
+that whenever a change is required the `npm run start` command should be run again to reflect the last changes
+in contrast with the React app which thanks to Vite all the changes are reflected immediately.
+
+
+# Setup React app
+
+Add the value for the env var in the `.env` file: 
+`VITE_REACT_API_URL` it can be found once the API is run.
+
+
+Run the `npm i`from the frontend folder and then use `npm run dev`.
+That command will start the application which behinds is configured by Vite and Typescript.
+
+Bootstrap CSS is imported to use its CSS clases and the JS interactivity for opening the modal.
+It's plain Boostrap, React-Bootstrap or React-style frameworks were not installed to write the react components from scratch.
+
 
 
 ### Use the API
