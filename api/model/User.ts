@@ -8,7 +8,8 @@ export const User = databaseConnection.define(
     {
         id: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         username: {
             type: DataTypes.STRING(10),

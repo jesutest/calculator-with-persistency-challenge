@@ -10,7 +10,7 @@ export const Operation = databaseConnection.define(
             primaryKey: true,
             autoIncrement: true
         },
-        userID: {
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -30,7 +30,7 @@ export const Operation = databaseConnection.define(
             type: DataTypes.FLOAT,
             allowNull: false
         },
-        createdAt: {
+        timestamp: {
             type: DataTypes.DATE,
             allowNull: false
         }

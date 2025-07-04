@@ -1,35 +1,59 @@
-import { DatabaseConnection } from "../repository/databaseConnection";
-import { createOperation } from "../repository/operationRepository";
+import { OperationRepository } from "../repository/operationRepository";
 import { CalculationType, OperationResponse } from "../types/types";
 
 
-export const operationService = async ( {operandA, operandB, operation}: CalculationType ): Promise<OperationResponse> => {
+export class OperationService {
     
-    let calculatedValue: number = 0; 
+    constructor(){}
+
+    public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType ): Promise<OperationResponse> {
     
-    switch(operation) {
-        case 'ADDITION':
-            calculatedValue = operandA + operandB;
-        case 'SUBTRACTION':
-            calculatedValue = operandA - operandB;
-        case 'MULTIPLICATION':
-            calculatedValue = operandA * operandB;
-        case 'DIVISION':
-            calculatedValue = operandA / operandB;
-        case 'SQUARE_ROOT':
-            calculatedValue = Math.sqrt(operandB);
-        // TODO: default
+        let calculatedValue: number = 0; 
+    
+        switch(operation) {
+            case 'ADDITION':
+                calculatedValue = operandA + operandB;
+                break;
+            case 'SUBTRACTION':
+                calculatedValue = operandA - operandB;
+                break;
+            case 'MULTIPLICATION':
+                calculatedValue = operandA * operandB;
+                break;
+            case 'DIVISION':
+                calculatedValue = operandA / operandB;
+                break;
+            case 'SQUARE_ROOT':
+                calculatedValue = Math.sqrt(operandB);
+                break;
+            // TODO: default
+        }
+
+        const operationRepository = new OperationRepository();
+        await operationRepository.createOperation(
+            10,
+            {operandA, operandB, operation}, 
+            calculatedValue,  
+        );
+
+        return {
+            id: "operation-id",
+            operation: operation,
+            operandA: operandA,
+            operandB: operandB,
+            result: calculatedValue,
+            timestamp: new Date(),
+            userId: "user-id"
+        }
     }
 
-    await createOperation({operandA, operandB, operation}, calculatedValue, DatabaseConnection.getInstance() );
+    public async getOperations ( userId: number): Promise<any> {
 
-    return {
-        id: "operation-id",
-        operation: operation,
-        operandA: operandA,
-        operandB: operandB,
-        result: calculatedValue,
-        timestamp: new Date(),
-        userId: "user-id"
-    };
+        const operationRepository = new OperationRepository();
+        const operations = await operationRepository.getOperations(userId);
+        console.log(`operations: ${operations}`);
+
+        return operations;
+    }
+
 }

@@ -1,24 +1,45 @@
-import { Sequelize } from "sequelize";
 import { CalculationType } from "../types/types"
 import { Operation } from "../model/Operation";
 
 
-export const createOperation = async ({operandA, operandB, operation}: CalculationType, calculatedValue: number, databaseConnection: Sequelize) => {
+export class OperationRepository {
+    
+    constructor() {}
 
-    try{
-        const newOperation = await Operation.create( {
-            userID: 10,
-            operation: operation,
-            operandA: operandA,
-            operandB: operandB,
-            result: calculatedValue,
-            createdAt: new Date()
-        })
+    public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType, calculatedValue: number): Promise<void> {
+        try{
+            await Operation.create( {
+                userId: userId,
+                operation: operation,
+                operandA: operandA,
+                operandB: operandB,
+                result: calculatedValue,
+                timestamp: new Date()
+            })
 
-        console.log( `Operation record: ${newOperation}` );
-        console.log( "Operation and calculated value persisted in database" );
+            console.log( "Operation and calculated value persisted in database" );
+        }
+        catch( e ) {
+            console.log( `Error while inserting operation record: ${e}` );
+        }
     }
-    catch( e) {
-        console.log( `the error: ${e}` );
+
+    public async getOperations (userId: number): Promise<any> {
+        try{
+            const operations = await Operation.findAll({
+                where: {
+                    userId: userId
+                }
+            });
+
+            console.log( `Operations: ${operations}` );
+
+            console.log( "Operation and calculated value persisted in database" );
+            
+            return operations;
+        }
+        catch( e ) {
+            console.log( `Error while inserting operation record: ${e}` );
+        }
     }
 }

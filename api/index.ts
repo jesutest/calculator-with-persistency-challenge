@@ -8,7 +8,7 @@ import cors from 'cors';
 
 import { OperationType, OperationResponse } from './types/types';
 import { isAvalidOperation } from './util/validateInput';
-import { operationService } from './service/operationService';
+import { OperationService } from './service/operationService';
 import {Operation} from './model/Operation';
 import {User} from './model/User';
 import { DatabaseConnection } from './repository/databaseConnection';
@@ -28,12 +28,25 @@ app.get('/', (_req: Request, res: Response) => {
     })
 });
 
+
+app.get('/api/history', async (req: Request, res: Response) => {
+    
+    const userId = 10;
+    const operationService = new OperationService();
+    const operationResponse: OperationResponse = await operationService.getOperations( userId );
+
+    res.send({
+        "message": operationResponse
+    })
+});
+
 app.post('/api/calculate', async (req: Request, res: Response) => {
     
     const body = req.body;
     const operandA: number = Number(body.operandA);
     const operandB: number = Number(body.operandB);
     const operation: OperationType = body.operation;
+
 
     // Validate operands are in the expected range
     if ( !isAvalidOperation(operandA, operandB, operation) ){
@@ -46,7 +59,9 @@ app.post('/api/calculate', async (req: Request, res: Response) => {
         return;
     }
 
-    const operationResponse: OperationResponse = await operationService( { operandA, operandB, operation } );
+    const userId = 10;
+    const operationService = new OperationService();
+    const operationResponse: OperationResponse = await operationService.createOperation( userId, { operandA, operandB, operation } );
 
     res.send({
         "message": operationResponse
