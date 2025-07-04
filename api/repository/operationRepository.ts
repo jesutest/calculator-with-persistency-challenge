@@ -6,9 +6,9 @@ export class OperationRepository {
     
     constructor() {}
 
-    public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType, calculatedValue: number): Promise<void> {
+    public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType, calculatedValue: number): Promise<any> {
         try{
-            await Operation.create( {
+            const result: any = await Operation.create( {
                 userId: userId,
                 operation: operation,
                 operandA: operandA,
@@ -18,6 +18,7 @@ export class OperationRepository {
             })
 
             console.log( "Operation and calculated value persisted in database" );
+            return result;
         }
         catch( e ) {
             console.log( `Error while inserting operation record: ${e}` );
@@ -39,7 +40,7 @@ export class OperationRepository {
         }
     }
 
-    public async getOperationById(userId: number, operationId: number): Promise<any> {
+    public async getOperationById(userId: number, operationId: string): Promise<any> {
         try{
             const operation = await Operation.findOne({
                 where: {

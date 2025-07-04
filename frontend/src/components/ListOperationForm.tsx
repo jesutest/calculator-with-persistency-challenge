@@ -41,7 +41,7 @@ export const ListOperationForm: React.FC = () => {
                         {
                             operations.map( (operation: any, index: any) => 
                                 <tr key={index} onClick={ async () => displayRecordDetails(operation.id) } data-bs-toggle="modal" data-bs-target="#operationDetailModal">
-                                    <th>{operation.id}</th>
+                                    <th scope="row">{operation.id}</th>
                                     <th>{operation.operation}</th>
                                     <th>{operation.timestamp}</th>
                                 </tr>
@@ -52,11 +52,11 @@ export const ListOperationForm: React.FC = () => {
             </div>
 
             <div className="modal fade" id="operationDetailModal" tabIndex={-1} aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-lg">
+                <div className="modal-dialog modal-xl">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">Operation Details</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-lable="Close"></button>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <table className="table table-hover">

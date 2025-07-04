@@ -1,5 +1,19 @@
 # calculator-with-persistency-challenge
 
+# Setup React app
+
+Run the `npm i`from the frontend folder and then use `npm run dev`.
+That command will start the application which behinds is configured by Vite and Typescript.
+
+Bootstrap CSS is imported to use its CSS clases and the JS interactivity for opening the modal.
+It's plain Boostrap, React-Bootstrap or React-style frameworks were not installed to write the react components from scratch.
+
+# Setup Express API
+
+Run the `npm i` from the api folder and then use `npm run start` to launch the api.
+Behind that command the `tsc` tool is used, for node it doesn't have something like `ts-node` meaning
+that whenever a change is required the `npm run start` command should be run again to reflect the last changes
+in contrast with the React app which thanks to Vite all the changes are reflected immediately.
 
 ### Setup MySQL database - The version is 8.4.5 which is the current LTS
 
@@ -17,4 +31,20 @@ and once the api project is launched you can verify the existence of the tables 
 
 
 
+# Current state of the repository
 
+The structure of the api was defined to give it an easy-to-work folder structure. 
+
+The frontend requires more work to do the same thing
+because something like `useContext` hook could be used to share the state and methods to reflect the changes between siblings.
+That is noticed when a new operation is registered and it is not reflected on the Operations history, a page refresh is required to load
+again the changes.
+
+Sequelize is used to manage the database schema by using `{force: true}` which forces the database to accept
+the model defined on the api.
+
+Next steps: 
+- Create endpoint to delete a Operation record and add the logic to the React app
+- Add unit tests and start the TDD strategy on both backend and frontend
+- Add the auth module on both backend and frontend
+- Analyze if a shared module is worth it to not duplicate validation logic on the 2 sides of the system

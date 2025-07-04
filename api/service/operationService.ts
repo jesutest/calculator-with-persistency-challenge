@@ -33,32 +33,32 @@ export class OperationService {
             // TODO: default
         }
 
-        await this.operationRepository.createOperation(
-            10,
+        const result = await this.operationRepository.createOperation(
+            Number(userId),
             {operandA, operandB, operation}, 
             calculatedValue,  
         );
 
         return {
-            id: "operation-id",
+            id: result.id,
             operation: operation,
             operandA: operandA,
             operandB: operandB,
             result: calculatedValue,
             timestamp: new Date(),
-            userId: "user-id"
+            userId: Number(userId)
         }
     }
 
     public async getOperations ( userId: number): Promise<any> {
-;
+
         console.log(`Pulling operations from database`);
         const operations = await this.operationRepository.getOperations(userId);
 
         return operations;
     }
 
-    public async getOperationById ( userId: number, operationId: number): Promise<any> {
+    public async getOperationById ( userId: number, operationId: string): Promise<any> {
 
         console.log(`Pulling operation from database`);
         const operation = await this.operationRepository.getOperationById(userId, operationId);

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-type OperationType = 'ADDITION' | 'SUBSTRACTION' | 'MULTIPLICATION' | 'DIVISION' | 'SQUARE_ROOT';
+type OperationType = 'ADDITION' | 'SUBTRACTION' | 'MULTIPLICATION' | 'DIVISION' | 'SQUARE_ROOT';
 
 export const CreateOperationForm: React.FC = () => {
     const [operandA, setOperandA] = useState<string>("");
@@ -60,7 +60,7 @@ export const CreateOperationForm: React.FC = () => {
             
             <div className="row mt-4 mb-4 text-center">
                 <span><b>Insert the 2 operands and press Submit to perform the calculation</b></span>
-                <span>Note: For the square root only the Operan B is taken into account</span>
+                <span>Note: For the square root only the Operand B is taken into account</span>
             </div>
 
             <div className="card">
@@ -78,7 +78,7 @@ export const CreateOperationForm: React.FC = () => {
                                 <select name="operation" id="operation" className='form-select mt-2'
                                     onChange={ e => handleOperationSelect(e.target.value as OperationType) }>
                                     <option value="ADDITION">+</option>
-                                    <option value="SUBSTRACTION">-</option>
+                                    <option value="SUBTRACTION">-</option>
                                     <option value="MULTIPLICATION">*</option>
                                     <option value="DIVISION">/</option>
                                     <option value="SQUARE_ROOT">√</option>

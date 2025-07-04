@@ -13,5 +13,5 @@ export interface OperationResponse {
     operandB: number,
     result: number,
     timestamp: Date, // TODO: verify this
-    userId: string
+    userId: number
 }
