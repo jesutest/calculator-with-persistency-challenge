@@ -12,7 +12,10 @@
   "description": "",
   "dependencies": {
     "express": "5.1.0",
-    "cors": "2.8.5"
+    "cors": "2.8.5",
+    "sequelize": "6.37.7",
+    "mariadb": "3.4.4",
+    "dotenv": "17.0.1"
   },
   "devDependencies": {
     "typescript": "5.8.3",

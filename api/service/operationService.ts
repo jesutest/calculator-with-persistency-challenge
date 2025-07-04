@@ -1,4 +1,5 @@
-import { operationRepository } from "../repository/operationRepository";
+import { DatabaseConnection } from "../repository/databaseConnection";
+import { createOperation } from "../repository/operationRepository";
 import { CalculationType, OperationResponse } from "../types/types";
 
 
@@ -20,7 +21,7 @@ export const operationService = async ( {operandA, operandB, operation}: Calcula
         // TODO: default
     }
 
-    await operationRepository({operandA, operandB, operation}, calculatedValue);
+    await createOperation({operandA, operandB, operation}, calculatedValue, DatabaseConnection.getInstance() );
 
     return {
         id: "operation-id",

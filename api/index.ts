@@ -9,9 +9,13 @@ import cors from 'cors';
 import { OperationType, OperationResponse } from './types/types';
 import { isAvalidOperation } from './util/validateInput';
 import { operationService } from './service/operationService';
+import {Operation} from './model/Operation';
+import {User} from './model/User';
+import { DatabaseConnection } from './repository/databaseConnection';
 
 const app: Application = express();
 const port = 3000;
+
 
 app.use(cors({
     origin: true
@@ -42,7 +46,6 @@ app.post('/api/calculate', async (req: Request, res: Response) => {
         return;
     }
 
-    // 
     const operationResponse: OperationResponse = await operationService( { operandA, operandB, operation } );
 
     res.send({
@@ -50,6 +53,16 @@ app.post('/api/calculate', async (req: Request, res: Response) => {
     })
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+app.listen(port, async () => {
+    try{
+        await DatabaseConnection.getInstance().authenticate();
+        console.log('The connection to database was established succesfully');
+        
+        await User.sync({force: true});
+        await Operation.sync({force: true});
+        console.log(`Server running on port ${port}`);
+    }
+    catch( e ){
+        console.log(`Error while connecting to database and running server: ${e}`);
+    }
 })
