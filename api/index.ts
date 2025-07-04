@@ -40,6 +40,18 @@ app.get('/api/history', async (req: Request, res: Response) => {
     })
 });
 
+app.get('/api/history/{:id}', async (req: Request, res: Response) => {
+    
+    const userId = 10;
+    const operationId = Number(req.params.id);
+    const operationService = new OperationService();
+    const operationResponse: OperationResponse = await operationService.getOperationById( userId, operationId );
+
+    res.send({
+        "message": operationResponse
+    })
+});
+
 app.post('/api/calculate', async (req: Request, res: Response) => {
     
     const body = req.body;
@@ -73,8 +85,8 @@ app.listen(port, async () => {
         await DatabaseConnection.getInstance().authenticate();
         console.log('The connection to database was established succesfully');
         
-        await User.sync({force: true});
-        await Operation.sync({force: true});
+        await User.sync();
+        await Operation.sync();
         console.log(`Server running on port ${port}`);
     }
     catch( e ){

@@ -32,11 +32,23 @@ export class OperationRepository {
                 }
             });
 
-            console.log( `Operations: ${operations}` );
-
-            console.log( "Operation and calculated value persisted in database" );
-            
             return operations;
+        }
+        catch( e ) {
+            console.log( `Error while inserting operation record: ${e}` );
+        }
+    }
+
+    public async getOperationById(userId: number, operationId: number): Promise<any> {
+        try{
+            const operation = await Operation.findOne({
+                where: {
+                    userId: userId,
+                    id: operationId
+                }
+            });
+
+            return operation;
         }
         catch( e ) {
             console.log( `Error while inserting operation record: ${e}` );

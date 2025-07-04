@@ -4,7 +4,11 @@ import { CalculationType, OperationResponse } from "../types/types";
 
 export class OperationService {
     
-    constructor(){}
+    private readonly operationRepository: OperationRepository;
+
+    constructor(){
+        this.operationRepository = new OperationRepository();
+    }
 
     public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType ): Promise<OperationResponse> {
     
@@ -29,8 +33,7 @@ export class OperationService {
             // TODO: default
         }
 
-        const operationRepository = new OperationRepository();
-        await operationRepository.createOperation(
+        await this.operationRepository.createOperation(
             10,
             {operandA, operandB, operation}, 
             calculatedValue,  
@@ -48,12 +51,19 @@ export class OperationService {
     }
 
     public async getOperations ( userId: number): Promise<any> {
-
-        const operationRepository = new OperationRepository();
-        const operations = await operationRepository.getOperations(userId);
-        console.log(`operations: ${operations}`);
+;
+        console.log(`Pulling operations from database`);
+        const operations = await this.operationRepository.getOperations(userId);
 
         return operations;
+    }
+
+    public async getOperationById ( userId: number, operationId: number): Promise<any> {
+
+        console.log(`Pulling operation from database`);
+        const operation = await this.operationRepository.getOperationById(userId, operationId);
+
+        return operation;
     }
 
 }
