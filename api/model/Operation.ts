@@ -6,7 +6,7 @@ export const Operation = databaseConnection.define(
     'Operation',
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER, // TODO: Change to UUID
             primaryKey: true,
             autoIncrement: true
         },

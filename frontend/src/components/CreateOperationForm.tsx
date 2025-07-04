@@ -59,7 +59,8 @@ export const CreateOperationForm: React.FC = () => {
         <div className="col-md-4 offset-md-4">
             
             <div className="row mt-4 mb-4 text-center">
-                <span>Insert the 2 operands and press Submit to perform the calculation</span>
+                <span><b>Insert the 2 operands and press Submit to perform the calculation</b></span>
+                <span>Note: For the square root only the Operan B is taken into account</span>
             </div>
 
             <div className="card">
@@ -95,7 +96,7 @@ export const CreateOperationForm: React.FC = () => {
                         <p className='h4'>Result: {total}</p>
                         
                         <div className="row">
-                            <div className="col-4 offset-4">
+                            <div className="col-4 offset-4 text-center">
                                 <button className='btn btn-danger'>Submit</button>
                             </div>
                         </div>
