@@ -2,7 +2,7 @@
 
 # Setup MySQL database
 
-#### NOTE: You'll get a warning saying that the engine version from the database is no longer supported, however the docker image is the latest available. This need to be address later to verify what's wrong on Sequelize, it might that the driver is the official from MariaDB.
+#### NOTE: You'll get a warning saying that the engine version from the database is no longer supported, however the docker image is the latest available. This needs to be addressed later to verify what's wrong on Sequelize, it might that the driver is the official from MariaDB.
 
 To do so, you need docker in your machine. 
 
