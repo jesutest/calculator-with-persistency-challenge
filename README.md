@@ -15,7 +15,9 @@ Behind that command the `tsc` tool is used, for node it doesn't have something l
 that whenever a change is required the `npm run start` command should be run again to reflect the last changes
 in contrast with the React app which thanks to Vite all the changes are reflected immediately.
 
-### Setup MySQL database - The version is 8.4.5 which is the current LTS
+### Setup MySQL database
+
+#### NOTE: You'll get a warning saying that the engine version from the database is no longer supported, however the docker image is the latest available. This need to be address later to verify what's wrong on Sequelize, it might that the driver is the official from MariaDB.
 
 To do so, you need docker in your machine. 
 
@@ -30,20 +32,42 @@ Verify that the calculator database was created by running `show databases;`
 and once the api project is launched you can verify the existence of the tables with `SELECT table_name FROM information_schema.tables where table_schema='calculator';` it should display the `users` and `operations` tables; 
 
 
+### Use the API
+
+Operation are inserted by using this endpoint `/api/calculate` with POST
+
+e.g payload
+`{
+    "operandA": 20,
+    "operandB": 4,
+    "operation": "ADDITION"
+}`
+
+To pull all the operations for a user use this endpoint `/api/history` with GET, 
+a harcoded userId is used for that purpose due to the current lack of the auth module: `10`
+
+To pull an specific operation for a user use this endpoint `/api/history/{uuid}` with GET, 
+a harcoded userId is used for that purpose due to the current lack of the auth module: `10`
+
+
+
 
 # Current state of the repository
 
 The structure of the api was defined to give it an easy-to-work folder structure. 
 
-The frontend requires more work to do the same thing
-because something like `useContext` hook could be used to share the state and methods to reflect the changes between siblings.
+It still requires much work and corrections. The frontend requires also more work like adding the `useContext` hook 
+that could be used to share the state and methods to reflect the changes between siblings.
 That is noticed when a new operation is registered and it is not reflected on the Operations history, a page refresh is required to load
 again the changes.
 
 Sequelize is used to manage the database schema by using `{force: true}` which forces the database to accept
 the model defined on the api.
 
+Since the auth model is still not created, a `userId` is hardcoded to insert and display the data.
+
 Next steps: 
+- Add Postman Collection
 - Create endpoint to delete a Operation record and add the logic to the React app
 - Add unit tests and start the TDD strategy on both backend and frontend
 - Add the auth module on both backend and frontend
