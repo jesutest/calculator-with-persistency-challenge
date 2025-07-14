@@ -25,7 +25,7 @@ export class OperationRepository {
         }
     }
 
-    public async getOperations (userId: number): Promise<any> {
+    public async getOperationsByUserId (userId: number): Promise<any> {
         try{
             const operations = await Operation.findAll({
                 where: {

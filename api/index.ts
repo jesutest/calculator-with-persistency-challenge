@@ -11,7 +11,7 @@ import {
     OperationResponse,
     OperationRequest
  } from './types/types';
-import { validateOperationInput } from './util/validateOperationInput';
+import { validateOperationInput } from './validator/validateOperationInput';
 import { OperationService } from './service/operationService';
 import {Operation} from './model/Operation';
 import {User} from './model/User';
@@ -37,7 +37,7 @@ app.get('/api/history', async (req: Request, res: Response) => {
     
     const userId = 10;
     const operationService = new OperationService();
-    const operationResponse: OperationResponse = await operationService.getOperations( userId );
+    const operationResponse: OperationResponse = await operationService.getOperationsByUserId( userId );
 
     res.send({
         "message": operationResponse
@@ -64,19 +64,25 @@ app.post('/api/calculate', async (req: Request, res: Response) => {
     const operation: OperationType = body.operation;
 
     // Validate operands are in the expected range
-    if ( !validateOperationInput(operandA, operandB, operation) ) {
+    if ( !validateOperationInput(operandA, operandB, operation) ){
         
         res.status(400)
             .send({
             "message": `Operands should be between -1,000,000 and +1,000,000, divison by zero is not allowed \
                 and Square root is not allowed for negative numbers`
         });
-        return;
     }
 
     const userId = 10;
     const operationService = new OperationService();
-    const operationResponse: OperationResponse = await operationService.createOperation( userId, { operandA, operandB, operation } );
+    const operationResponse = await operationService.createOperation( userId, { operandA, operandB, operation } );
+
+    if( !operationResponse) {
+        res.status(500)
+            .send({
+            "message": `An error ocurred while inserting the record into the database.`
+        });
+    }
 
     res.send({
         "message": operationResponse

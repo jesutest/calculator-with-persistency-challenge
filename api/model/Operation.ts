@@ -2,6 +2,7 @@ import { DataTypes} from 'sequelize';
 import { DatabaseConnection } from '../repository/databaseConnection';
 const databaseConnection = DatabaseConnection.getInstance();
 
+// TODO: If not needed, disable automatic creation of timestamps 
 export const Operation = databaseConnection.define(
     'Operation',
     {

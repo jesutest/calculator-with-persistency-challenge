@@ -10,60 +10,77 @@ export class OperationService {
         this.operationRepository = new OperationRepository();
     }
 
-    public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType ): Promise<OperationResponse> {
+    public async createOperation ( userId: number, {operandA, operandB, operation}: CalculationType ): Promise<OperationResponse | undefined> {
     
-        let calculatedValue: number = 0; 
+        try {
+            let calculatedValue: number = 0;
     
-        switch(operation) {
-            case 'ADDITION':
-                calculatedValue = operandA + operandB;
-                break;
-            case 'SUBTRACTION':
-                calculatedValue = operandA - operandB;
-                break;
-            case 'MULTIPLICATION':
-                calculatedValue = operandA * operandB;
-                break;
-            case 'DIVISION':
-                calculatedValue = operandA / operandB;
-                break;
-            case 'SQUARE_ROOT':
-                calculatedValue = Math.sqrt(operandB);
-                break;
-            // TODO: default
-        }
+            switch(operation) {
+                case 'ADDITION':
+                    calculatedValue = operandA + operandB;
+                    break;
+                case 'SUBTRACTION':
+                    calculatedValue = operandA - operandB;
+                    break;
+                case 'MULTIPLICATION':
+                    calculatedValue = operandA * operandB;
+                    break;
+                case 'DIVISION':
+                    calculatedValue = operandA / operandB;
+                    break;
+                case 'SQUARE_ROOT':
+                    calculatedValue = Math.sqrt(operandB);
+                    break;
+                // TODO: default
+            }
 
-        const result = await this.operationRepository.createOperation(
-            Number(userId),
-            {operandA, operandB, operation}, 
-            calculatedValue,  
-        );
+            const result = await this.operationRepository.createOperation(
+                Number(userId),
+                {operandA, operandB, operation},
+                calculatedValue,  
+            );
 
-        return {
-            id: result.id,
-            operation: operation,
-            operandA: operandA,
-            operandB: operandB,
-            result: calculatedValue,
-            timestamp: new Date(),
-            userId: Number(userId)
+            return {
+                id: result.id,
+                operation: operation,
+                operandA: operandA,
+                operandB: operandB,
+                result: calculatedValue,
+                timestamp: new Date(),
+                userId: Number(userId)
+            }
+
+        } catch (error) {
+            console.log('Exception ocurred: ', error )
+            return undefined;
         }
+ 
     }
 
-    public async getOperations ( userId: number): Promise<any> {
+    public async getOperationsByUserId ( userId: number): Promise<any> {
 
-        console.log(`Pulling operations from database`);
-        const operations = await this.operationRepository.getOperations(userId);
-
-        return operations;
+        try {
+            console.log(`Pulling operations from database`);
+            const operations = await this.operationRepository.getOperationsByUserId(userId);    
+            return operations;
+            
+        } catch (error) {
+            console.log('Exception ocurred: ', error )
+            return undefined;
+        }
+        
     }
 
     public async getOperationById ( userId: number, operationId: string): Promise<any> {
 
-        console.log(`Pulling operation from database`);
-        const operation = await this.operationRepository.getOperationById(userId, operationId);
-
-        return operation;
+        try {
+            console.log(`Pulling operation from database`);
+            const operation = await this.operationRepository.getOperationById(userId, operationId);
+            return operation;   
+        } catch (error) {
+            console.log('Exception ocurred: ', error )
+            return undefined;
+        }
     }
 
 }
