@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 
-export const ListOperationForm: React.FC = () => {
+type ListOperationFormProps = {
+    operations: []
+    setOperations: any
+}
+
+export const ListOperationForm: React.FC<ListOperationFormProps> = ( props: ListOperationFormProps ) => {
 
     const API_URL: string = import.meta.env.VITE_REACT_API_URL
 
-    const [operations, setOperations] = useState([]);
     const [operationDetails, setOperationDetails] = useState<any>();
 
     const displayRecordDetails = async (operationID: string) => {
@@ -17,11 +21,11 @@ export const ListOperationForm: React.FC = () => {
     useEffect( () => {
         const fetchAllOperations = async () => {
             const response = await axios.get(`${API_URL}/api/history`);
-            setOperations(response.data.message);
+            props.setOperations(response.data.message);
         } 
         
         fetchAllOperations();
-    }, [])
+    }, []);
 
     return(
         <div className="row mt-5">
@@ -39,7 +43,7 @@ export const ListOperationForm: React.FC = () => {
                     </thead>
                     <tbody>
                         {
-                            operations.map( (operation: any, index: any) => 
+                            props.operations.map( (operation: any, index: any) => 
                                 <tr key={index} onClick={ async () => displayRecordDetails(operation.id) } data-bs-toggle="modal" data-bs-target="#operationDetailModal">
                                     <th scope="row">{operation.id}</th>
                                     <th>{operation.operation}</th>

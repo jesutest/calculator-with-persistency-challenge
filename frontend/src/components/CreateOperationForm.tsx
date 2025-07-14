@@ -3,7 +3,11 @@ import axios from 'axios';
 
 type OperationType = 'ADDITION' | 'SUBTRACTION' | 'MULTIPLICATION' | 'DIVISION' | 'SQUARE_ROOT';
 
-export const CreateOperationForm: React.FC = () => {
+type CreateOperationFormProps = {
+    setOperations: any
+}
+
+export const CreateOperationForm: React.FC<CreateOperationFormProps> = (props: CreateOperationFormProps) => {
     const [operandA, setOperandA] = useState<string>("");
     const [operandB, setOperandB] = useState<string>("");
     const [operation, setOperation] = useState<string>("ADDITION");
@@ -26,33 +30,36 @@ export const CreateOperationForm: React.FC = () => {
         
         if( Number(operandA) < LOWER_LIMIT || Number(operandA) > UPPER_LIMIT
             || Number(operandB) < LOWER_LIMIT || Number(operandB) > UPPER_LIMIT ) {
-            console.log(`Operands should be between -1,000,000 and +1,000,000`);
+            //console.log(`Operands should be between -1,000,000 and +1,000,000`);
             setTotal("NA");
             return;
         }
 
         if( operation === 'DIVISION' && Number(operandB) === 0) {
-            console.log('Division by zero is not allowed');
+            //console.log('Division by zero is not allowed');
             return false;
         }
 
         if( operation === 'SQUARE_ROOT' && Number(operandB) < 0) {
-            console.log('Square root is not allowed for negative numbers');
+            //console.log('Square root is not allowed for negative numbers');
             return false;
         }
 
-        console.log(`sending data: ${operandA}, ${operandB}, ${operation}`);
+        //console.log(`sending data: ${operandA}, ${operandB}, ${operation}`);
         
-        const response = await axios.post(
+        // TODO: Put a try/catch block for the entire function
+        await axios.post(
             `${API_URL}/api/calculate`, {
                 operandA: operandA,
                 operandB: operandB,
                 operation: operation
             }
         )
+            
+        const getResponse = await axios.get(`${API_URL}/api/history`);
 
-        console.log(`response: ${JSON.stringify(response.data)}`);
-    
+        props.setOperations( getResponse.data.message );
+        
     }
 
     return(
