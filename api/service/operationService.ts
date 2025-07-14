@@ -83,4 +83,17 @@ export class OperationService {
         }
     }
 
+
+    public async deleteOperationById ( userId: number, operationId: string): Promise<any> {
+
+        try {
+            console.log(`Deleting operation from database`);
+            const operation = await this.operationRepository.deleteOperationById(userId, operationId);
+            console.log('result delete: ', operation)
+            return operation;   
+        } catch (error) {
+            console.log('Exception ocurred: ', error )
+            return undefined;
+        }
+    }
 }

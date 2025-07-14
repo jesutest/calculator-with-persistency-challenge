@@ -56,6 +56,25 @@ app.get('/api/history/{:id}', async (req: Request, res: Response) => {
     })
 });
 
+app.delete('/api/history/{:id}', async (req: Request, res: Response) => {
+    
+    const userId = 10;
+    const operationId = req.params.id;
+    const operationService = new OperationService();
+    const operationResponse: OperationResponse = await operationService.deleteOperationById( userId, operationId );
+
+    if( !operationResponse) {
+        res.status(500)
+            .send({
+            "message": `An error ocurred while delete the operation from the database.`
+        });
+    }
+
+    res.send({
+        "message": `Operation has been removed from the database`
+    })
+});
+
 app.post('/api/calculate', async (req: Request, res: Response) => {
     
     const body = req.body as OperationRequest;

@@ -55,4 +55,20 @@ export class OperationRepository {
             console.log( `Error while inserting operation record: ${e}` );
         }
     }
+
+    public async deleteOperationById(userId: number, operationId: string): Promise<any> {
+        try{
+            const operation = await Operation.destroy({
+                where: {
+                    userId: userId,
+                    id: operationId
+                }
+            });
+
+            return operation;
+        }
+        catch( e ) {
+            console.log( `Error while inserting operation record: ${e}` );
+        }
+    }
 }

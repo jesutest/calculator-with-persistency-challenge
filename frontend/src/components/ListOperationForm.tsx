@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from 'axios';
 
 type ListOperationFormProps = {
@@ -12,19 +12,31 @@ export const ListOperationForm: React.FC<ListOperationFormProps> = ( props: List
 
     const [operationDetails, setOperationDetails] = useState<any>();
 
+    const getAllOperations = async () => {
+        const response = await axios.get(`${API_URL}/api/history`);
+        props.setOperations(response.data.message);
+    } 
+
     const displayRecordDetails = async (operationID: string) => {
         const response = await axios.get( `${API_URL}/api/history/${ operationID }` );
         console.log('details: ', response.data.message);
         setOperationDetails(response.data.message);
     }
 
+    const operationModalRef = useRef<HTMLInputElement>(null);
+
+    const handleDeleteButton = async (operationId: string) => {
+
+        await axios.delete( `${API_URL}/api/history/${ operationId }` );
+
+        await getAllOperations();
+
+        operationModalRef.current?.click();
+    }
+
+
     useEffect( () => {
-        const fetchAllOperations = async () => {
-            const response = await axios.get(`${API_URL}/api/history`);
-            props.setOperations(response.data.message);
-        } 
-        
-        fetchAllOperations();
+        getAllOperations();
     }, []);
 
     return(
@@ -60,7 +72,7 @@ export const ListOperationForm: React.FC<ListOperationFormProps> = ( props: List
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">Operation Details</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button ref={operationModalRef} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
                             <table className="table table-hover">
@@ -84,7 +96,10 @@ export const ListOperationForm: React.FC<ListOperationFormProps> = ( props: List
                                         <th>{operationDetails?.result}</th>
                                         <th>{operationDetails?.timestamp}</th>
                                         <th>
-                                            <button type="button" className="btn btn-danger btn-sm">Delete</button>
+                                            <button type="button" className="btn btn-danger btn-sm"
+                                                onClick={() => handleDeleteButton(operationDetails?.id)}>
+                                                Delete
+                                            </button>
                                         </th>
                                     </tr>
                                 </tbody>
