@@ -6,8 +6,12 @@ import express, {
 // @ts-ignore
 import cors from 'cors';
 
-import { OperationType, OperationResponse } from './types/types';
-import { isAvalidOperation } from './util/validateInput';
+import { 
+    OperationType, 
+    OperationResponse,
+    OperationRequest
+ } from './types/types';
+import { validateOperationInput } from './util/validateOperationInput';
 import { OperationService } from './service/operationService';
 import {Operation} from './model/Operation';
 import {User} from './model/User';
@@ -54,14 +58,13 @@ app.get('/api/history/{:id}', async (req: Request, res: Response) => {
 
 app.post('/api/calculate', async (req: Request, res: Response) => {
     
-    const body = req.body;
+    const body = req.body as OperationRequest;
     const operandA: number = Number(body.operandA);
     const operandB: number = Number(body.operandB);
     const operation: OperationType = body.operation;
 
-
     // Validate operands are in the expected range
-    if ( !isAvalidOperation(operandA, operandB, operation) ){
+    if ( !validateOperationInput(operandA, operandB, operation) ) {
         
         res.status(400)
             .send({

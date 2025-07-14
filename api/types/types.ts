@@ -6,6 +6,12 @@ export interface CalculationType {
     operation: OperationType
 }
 
+export interface OperationRequest {
+    operandA: number,
+    operandB: number,
+    operation: OperationType
+}
+
 export interface OperationResponse {
     id: string,
     operation: string,

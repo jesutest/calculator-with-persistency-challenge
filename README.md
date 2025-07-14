@@ -38,10 +38,10 @@ Add the value for the env var in the `.env` file:
 
 
 Run the `npm i`from the frontend folder and then use `npm run dev`.
-That command will start the application which behinds is configured by Vite and Typescript.
+That command will start the application which is configured by Vite and Typescript.
 
 Bootstrap CSS is imported to use its CSS clases and the JS interactivity for opening the modal.
-It's plain Boostrap, React-Bootstrap or React-style frameworks were not installed to write the react components from scratch.
+It's plain Boostrap, on the other hand React-Bootstrap or React-style frameworks were not installed to write the react components from scratch.
 
 
 
