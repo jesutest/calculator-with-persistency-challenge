@@ -13,10 +13,10 @@ export const CreateOperationForm: React.FC<CreateOperationFormProps> = (props: C
     const [operation, setOperation] = useState<string>("ADDITION");
     const [total, setTotal] = useState<string>("");
 
-    const API_URL: string = import.meta.env.VITE_REACT_API_URL
+    const API_URL: string = import.meta.env.VITE_REACT_API_URL || '';
 
     const handleOperationSelect = (value: OperationType) => {
-        console.log(`operation: ${value}`);
+        //console.log(`operation: ${value}`);
         setOperation(value);
     }
 

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router";
+
 
 export const SignupForm: React.FC = () => {
 
@@ -9,9 +10,29 @@ export const SignupForm: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const API_URL: string = import.meta.env.VITE_REACT_API_URL || '';
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
+
+        if( username.trim() === '' || email.trim() === '' || 
+            password.trim() === '' || confirmPassword.trim() === '') {
+                // All the fields are required
+            return;
+        }
+        
+        
+        // TODO: Put a try/catch block for the entire function
+        await axios.post(
+            `${API_URL}/api/signup`, {
+                username: username,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword
+            }
+        )
+
+        navigate('/login');
     }
     
     return(
