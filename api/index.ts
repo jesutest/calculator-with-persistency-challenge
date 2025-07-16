@@ -1,112 +1,44 @@
 import express, {
-    Application, 
-    Request, 
-    Response
+    Application,
 } from 'express';
 // @ts-ignore
 import cors from 'cors';
-
-import { 
-    OperationType, 
-    OperationResponse,
-    OperationRequest
- } from './types/types';
-import { validateOperationInput } from './validator/validateOperationInput';
-import { OperationService } from './service/operationService';
 import {Operation} from './model/Operation';
 import {User} from './model/User';
 import { DatabaseConnection } from './repository/databaseConnection';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+import { historyRouter } from './router/historyRouter';
+import { calculateRouter } from './router/calculateRouter';
 
 const app: Application = express();
 const port = 3000;
 
-
 app.use(cors({
     origin: true
 }));
-app.use(express.json());
-
-app.get('/', (_req: Request, res: Response) => {
-    res.send({
-        "message": "hello!"
-    })
-});
+app.use( express.json() );
 
 
-app.get('/api/history', async (req: Request, res: Response) => {
-    
-    const userId = 10;
-    const operationService = new OperationService();
-    const operationResponse: OperationResponse = await operationService.getOperationsByUserId( userId );
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Hello World',
+            version: '1.0.0'
+        }
+    },
+    apis: ['./build/router/*.js'],
+}
 
-    res.send({
-        "message": operationResponse
-    })
-});
+const swaggerSpec = swaggerJsDoc(options);
 
-app.get('/api/history/{:id}', async (req: Request, res: Response) => {
-    
-    const userId = 10;
-    const operationId = req.params.id;
-    const operationService = new OperationService();
-    const operationResponse: OperationResponse = await operationService.getOperationById( userId, operationId );
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec) );
 
-    res.send({
-        "message": operationResponse
-    })
-});
+app.use('/api/history', historyRouter );
 
-app.delete('/api/history/{:id}', async (req: Request, res: Response) => {
-    
-    const userId = 10;
-    const operationId = req.params.id;
-    const operationService = new OperationService();
-    const operationResponse: OperationResponse = await operationService.deleteOperationById( userId, operationId );
+app.use('/api/calculate', calculateRouter );
 
-    if( !operationResponse) {
-        res.status(500)
-            .send({
-            "message": `An error ocurred while delete the operation from the database.`
-        });
-    }
-
-    res.send({
-        "message": `Operation has been removed from the database`
-    })
-});
-
-app.post('/api/calculate', async (req: Request, res: Response) => {
-    
-    const body = req.body as OperationRequest;
-    const operandA: number = Number(body.operandA);
-    const operandB: number = Number(body.operandB);
-    const operation: OperationType = body.operation;
-
-    // Validate operands are in the expected range
-    if ( !validateOperationInput(operandA, operandB, operation) ){
-        
-        res.status(400)
-            .send({
-            "message": `Operands should be between -1,000,000 and +1,000,000, divison by zero is not allowed \
-                and Square root is not allowed for negative numbers`
-        });
-    }
-
-    const userId = 10;
-    const operationService = new OperationService();
-    const operationResponse = await operationService.createOperation( userId, { operandA, operandB, operation } );
-
-    if( !operationResponse) {
-        res.status(500)
-            .send({
-            "message": `An error ocurred while inserting the record into the database.`
-        });
-    }
-
-    res.send({
-        "message": operationResponse
-    })
-});
 
 app.listen(port, async () => {
     try{
