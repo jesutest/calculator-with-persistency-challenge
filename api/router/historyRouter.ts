@@ -34,8 +34,8 @@ historyRouter.get('/', async (req: Request, res: Response) => {
  *          - History
  *      description: Get the details of an operation
  *      parameters:
- *          - name: user id
  *          - in: query    
+ *            name: user id
  *            description: The user id
  *            required: True
  *            schema: 
@@ -65,8 +65,8 @@ historyRouter.get('/{:id}', async (req: Request, res: Response) => {
  *          - History
  *      description: Delete an operation
  *      parameters:
- *          - name: user id
  *          - in: query
+ *            name: user id
  *            description: The user id
  *            required: True
  *            schema: 

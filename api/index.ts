@@ -10,6 +10,7 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import { historyRouter } from './router/historyRouter';
 import { calculateRouter } from './router/calculateRouter';
+import { userRouter } from './router/userRouter';
 
 const app: Application = express();
 const port = 3000;
@@ -24,7 +25,7 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Hello World',
+            title: 'Calculator with Persistency Challenge',
             version: '1.0.0'
         }
     },
@@ -38,6 +39,8 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec) );
 app.use('/api/history', historyRouter );
 
 app.use('/api/calculate', calculateRouter );
+
+app.use('/api', userRouter );
 
 
 app.listen(port, async () => {
