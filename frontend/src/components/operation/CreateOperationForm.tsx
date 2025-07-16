@@ -25,8 +25,7 @@ export const CreateOperationForm: React.FC<CreateOperationFormProps> = (props: C
         const UPPER_LIMIT = 1_000_000;
 
         e.preventDefault();
-        console.log('doing something');
-        console.log(`Operation selected: ${operation}`);
+        
         
         if( Number(operandA) < LOWER_LIMIT || Number(operandA) > UPPER_LIMIT
             || Number(operandB) < LOWER_LIMIT || Number(operandB) > UPPER_LIMIT ) {

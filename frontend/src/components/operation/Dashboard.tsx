@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
-import { Navbar } from './components/Navbar';
-import { CreateOperationForm } from './components/CreateOperationForm';
-import { ListOperationForm } from './components/ListOperationForm';
+import { CreateOperationForm } from './CreateOperationForm';
+import { ListOperationForm } from './ListOperationForm';
 
-export const App: React.FC = () => {
+export const Dashboard: React.FC = () => {
 
     const [operations, setOperations] = useState<[]>([]);
 
     return (
         <div className='container-fluid'>
-            <Navbar/>
+            
             <CreateOperationForm
                 setOperations={setOperations}
             />
